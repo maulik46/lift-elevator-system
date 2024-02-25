@@ -22,8 +22,47 @@ createApp({
             startLift();
         }
 
+        const setLiftDirection = (closestFloor, current) => {
+            if(closestFloor > current){
+                liftUp.value = true;
+                liftDown.value = false;
+            }
+            else {
+                liftUp.value = false;
+                liftDown.value = true;
+            }
+        }
+
+        const setLiftUp = (current, isStartLift) => {
+            // console.log('go up..');
+            current=current+1;
+            if(current <= floors.value.length){
+                setCurrentFloor(current);
+            }
+            else{
+                isStopLift.value = true;
+                clearInterval(isStartLift);
+                
+                return false;
+            }
+        }
+
+        const setLiftDown = (current, isStartLift) => {
+            // console.log('go down..');
+            current=current-1;
+            if(current > 0){
+                setCurrentFloor(current);
+            }
+            else{
+                isStopLift.value = true;
+                clearInterval(isStartLift);
+                
+                return false;
+            }
+        }
+
         const setCurrentFloor = (floor) => {
-            console.log('next..',floor);
+            // console.log('next..',floor);
             currentFloor.value = floor;
         }
 
@@ -38,11 +77,10 @@ createApp({
 
         const startLift = () => {
             let isStartLift = setInterval(() => {
-                console.log('startLift...');
-
+                // console.log('startLift...');
                 const floorQueue = liftFloorQueue.value;
                 if(floorQueue.length <= 0){
-                    console.log('0 floors...');
+                    // console.log('0 floors...');
                     isStopLift.value = true;
                     clearInterval(isStartLift);
 
@@ -54,22 +92,15 @@ createApp({
                     return (Math.abs(curr - current) < Math.abs(prev - current) ? curr : prev);
                 });
 
-                if(closestFloor > current){
-                    liftUp.value = true;
-                    liftDown.value = false;
-                }
-                else {
-                    liftUp.value = false;
-                    liftDown.value = true;
-                }
+                setLiftDirection(closestFloor, current);
 
-                console.log({current}, {closestFloor});
-                console.log('isStopLift..',isStopLift.value);
+                // console.log({current}, {closestFloor});
+                // console.log('isStopLift..',isStopLift.value);
 
                 isStopLift.value = false;
                 
                 if(current == closestFloor){
-                    console.log('arrived..');
+                    // console.log('arrived..');
                     removedReachedFloor(closestFloor);
                     isStopLift.value = true;
                     clearInterval(isStartLift);
@@ -78,31 +109,10 @@ createApp({
                 }
 
                 if(liftUp.value){
-                    console.log('go up..');
-                    current=current+1;
-                    if(current <= floors.value.length){
-                        setCurrentFloor(current);
-                    }
-                    else{
-                        isStopLift.value = true;
-                        clearInterval(isStartLift);
-                        
-                        return false;
-                    }
-                    
+                    setLiftUp(current, isStartLift);
                 }
                 else if(liftDown.value){
-                    console.log('go down..');
-                    current=current-1;
-                    if(current > 0){
-                        setCurrentFloor(current);
-                    }
-                    else{
-                        isStopLift.value = true;
-                        clearInterval(isStartLift);
-                        
-                        return false;
-                    }
+                    setLiftDown(current, isStartLift);
                 }
                 
             }, 2000);
