@@ -3,16 +3,12 @@ const { createApp, ref, watch } = Vue
 createApp({
     setup() {
         const floors = ref([5,4,3,2,1]);
-
         const callFloor = ref("");
         const currentFloor = ref(1);
         const liftFloorQueue = ref([]);
-
         const liftUp = ref(false);
         const liftDown = ref(false);
-
         const isGoDisabled = ref(false);
-
         const isStopLift = ref(false);
 
         const handleCallLift = (floor) => {
@@ -107,7 +103,6 @@ createApp({
 
                     return false;
                 }
-
                 if(liftUp.value){
                     setLiftUp(current, isStartLift);
                 }
@@ -116,7 +111,6 @@ createApp({
                 }
                 
             }, 2000);
-
         }
 
         const handleGoToFloor = (floor) => {
