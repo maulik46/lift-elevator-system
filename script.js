@@ -16,19 +16,9 @@ createApp({
         const isStopLift = ref(false);
 
         const handleCallLift = (floor) => {
-            // if(floor > currentFloor.value){
-            //     liftUp.value = true;
-            //     liftDown.value = false;
-            // }
-            // else {
-            //     liftUp.value = false;
-            //     liftDown.value = true;
-            // }
+            liftFloorQueue.value.push(floor);
+            isStopLift.value = false;
 
-            // if(liftFloorQueue.value.indexOf(floor) === -1){
-                liftFloorQueue.value.push(floor);
-                isStopLift.value = false;
-            // }
             startLift();
         }
 
@@ -114,10 +104,7 @@ createApp({
                         return false;
                     }
                 }
-
-                // if(isStopLift.value){
-                //     clearInterval(isStartLift);
-                // }
+                
             }, 2000);
 
         }
