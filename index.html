@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lift Elevator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-light">
+    <div id="app" v-cloak>
+        <div class="container p-5">
+            <div class="card shadow-sm">
+                <div class="card-body building-bg">
+                    <h2 class="text-center">Lift Elevator System</h2>
+                    <div class="building-container">
+                        <div class="building">
+                            <div class="floor" :class="`floor-${floor}`" v-for="floor in floors" :key="floor">
+                                <div class="lift-container">
+                                    <div class="badge text-capitalize" :class="[currentFloor == floor ? 'bg-success' : 'bg-dark']">Floor {{floor}}</div>
+                                    <div class="lift" :class="[(currentFloor == floor && isStopLift) ? 'lift-stop' : 'lift-open']"></div>
+                                </div>
+                                <div class="lift-light mx-2" :class="[currentFloor == floor && 'active']"></div>
+                                <div>
+                                    <button class="btn btn-sm btn-dark mx-2" @click="handleCallLift(floor)" :disabled="currentFloor == floor">Call</button>
+
+                                    <button class="btn btn-sm btn-secondary rounded-circle mx-1 text-capitalize" :class="[currentFloor == floor && 'border-success border-2']" v-for="floorNo in floors" :key="floorNo" @click="handleGoToFloor(floorNo)" :disabled="currentFloor != floor">{{floorNo}}</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
